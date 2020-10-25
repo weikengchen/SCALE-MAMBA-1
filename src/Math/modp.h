@@ -28,9 +28,9 @@ All rights reserved
 template<int L>
 class modp_
 {
+public:
   mp_limb_t x[L];
 
-public:
   // NEXT FUNCTION IS FOR DEBUG PURPOSES ONLY
   mp_limb_t get_limb(int i)
   {

@@ -44,6 +44,7 @@ template<int L> class modp_;
 
 class Zp_Data
 {
+public:
   bool montgomery; // True if we are using Montgomery arithmetic
   mp_limb_t R[MAX_MOD_SZ], R2[MAX_MOD_SZ], R3[MAX_MOD_SZ], pi;
   mp_limb_t prA[MAX_MOD_SZ];
@@ -55,7 +56,6 @@ class Zp_Data
   void Mont_Mult_(mp_limb_t* z,const mp_limb_t* x,const mp_limb_t* y) const;
   void Mont_Mult(mp_limb_t* z,const mp_limb_t* x,const mp_limb_t* y) const;
 
-public:
   bigint pr;
 
   void assign(const Zp_Data &Zp);

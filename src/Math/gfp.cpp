@@ -9,51 +9,10 @@ All rights reserved
 
 #include "Exceptions/Exceptions.h"
 
+template<>
 thread_local Zp_Data gfp::ZpD;
 
-void gfp::almost_randomize(PRNG &G)
-{
-  /*
-  Why? The following e-mail explains:
-
-  I've recently profiled the software for prime order fields, and
-  I've noticed that 30 percent of the running time is spent on
-  random number generation, which seems quite high to me.
-
-  Recall that SPDZ2 checks openings a_1,...,a_t by checking a :=
-  \sum_j r_j*a_j for random r_j. The random elements are
-  currently generated as follows:
-  1. Generate a random number with at least 2n bits (for n-bit p)
-  2. Compute modulo p
-  3. Convert to Montgomery
-
-  I propose to generate as follows:
-  1. Generate a random (n-1)-bit number (for n-bit p)
-  2. Use directly as Montgomery representation
-
-  This involves two changes, a theoretical and a practical one:
-  - Theoretically, the resulting numbers are not uniformly
-    distributed in GF(p) but in a subset more than half the
-    size. This means that we lose less than 1 bit of security: We
-    need that \sum_j r_j*(a_j-a'_j) = 0 only with negligible
-    probability. Wlog, assume that a_1 != a'_1. Then r_1
-    = (\sum_{j!=1} r_j*(a_j-a'_j)) / (a_1-a'_1), which happens
-    with probability 2^(-n+1) if r_1 was chosen independently of
-    r_2,...,r_t. This is very similar to batch verification by
-    Bellare et al. (thanks to Nigel to pointing this out).
-  - Practically, Montgomery conversion is unnecessary independent
-    of the how the number was generated. The Montgomery
-    conversion of an element chosen uniformly in a set is
-    uniformly random distributed of a set of the same size
-    because Montgomery conversion is invertible. If the set is
-    the whole field, the resulting set is the whole field,
-    otherwise the set changes, which doesn't matter here.
-*/
-
-  G.get_random_bytes((uint8_t *) a.x, t() * sizeof(mp_limb_t));
-  a.x[t() - 1]&= ZpD.mask;
-}
-
+template<>
 void gfp::AND(const gfp &x, const gfp &y)
 {
   bigint bi1, bi2;
@@ -63,6 +22,7 @@ void gfp::AND(const gfp &x, const gfp &y)
   to_gfp(*this, bi1);
 }
 
+template<>
 void gfp::OR(const gfp &x, const gfp &y)
 {
   bigint bi1, bi2;
@@ -72,6 +32,7 @@ void gfp::OR(const gfp &x, const gfp &y)
   to_gfp(*this, bi1);
 }
 
+template<>
 void gfp::XOR(const gfp &x, const gfp &y)
 {
   bigint bi1, bi2;
@@ -81,6 +42,7 @@ void gfp::XOR(const gfp &x, const gfp &y)
   to_gfp(*this, bi1);
 }
 
+template<>
 void gfp::AND(const gfp &x, const bigint &y)
 {
   bigint bi;
@@ -89,6 +51,7 @@ void gfp::AND(const gfp &x, const bigint &y)
   to_gfp(*this, bi);
 }
 
+template<>
 void gfp::OR(const gfp &x, const bigint &y)
 {
   bigint bi;
@@ -97,6 +60,7 @@ void gfp::OR(const gfp &x, const bigint &y)
   to_gfp(*this, bi);
 }
 
+template<>
 void gfp::XOR(const gfp &x, const bigint &y)
 {
   bigint bi;
@@ -105,6 +69,7 @@ void gfp::XOR(const gfp &x, const bigint &y)
   to_gfp(*this, bi);
 }
 
+template<>
 void gfp::SHL(const gfp &x, int n)
 {
   if (n < 0)
@@ -129,6 +94,7 @@ void gfp::SHL(const gfp &x, int n)
     }
 }
 
+template<>
 void gfp::SHR(const gfp &x, int n)
 {
   if (n < 0)
@@ -153,16 +119,19 @@ void gfp::SHR(const gfp &x, int n)
     }
 }
 
+template<>
 void gfp::SHL(const gfp &x, const bigint &n)
 {
   SHL(x, mpz_get_si(n.get_mpz_t()));
 }
 
+template<>
 void gfp::SHR(const gfp &x, const bigint &n)
 {
   SHR(x, mpz_get_si(n.get_mpz_t()));
 }
 
+template<>
 gfp gfp::sqrRoot()
 {
   // Temp move to bigint so as to call sqrRootMod

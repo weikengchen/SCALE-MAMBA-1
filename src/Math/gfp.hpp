@@ -12,7 +12,6 @@ All rights reserved
 template<int L>
 thread_local Zp_Data gfp_<L>::ZpD;
 
-
 template<int L>
 void gfp_<L>::init_field(const bigint& p, bool mont)
 {

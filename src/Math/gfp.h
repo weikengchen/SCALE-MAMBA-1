@@ -250,7 +250,7 @@ public:
   }
   friend istream &operator>>(istream &s, gfp_ &x)
   {
-    x.input(s, true);
+    x.input(s, true); 
     return s;
   }
 

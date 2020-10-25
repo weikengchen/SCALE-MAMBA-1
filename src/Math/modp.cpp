@@ -13,6 +13,7 @@ All rights reserved
  *  The following functions remain the same in Real and Montgomery rep *
  ***********************************************************************/
 
+template<>
 void modp::randomize(PRNG &G, const Zp_Data &ZpD)
 {
   bigint x= randomBnd(G, ZpD.pr);
